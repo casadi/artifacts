@@ -22,12 +22,44 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        py2dot: ["2.7", "3.5", "3.6", "3.7", "3.8", "3.9", "3.10"]
+        py2dot: ["27", "35", "36", "37", "38", "39", "310"]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - id: get-id
+        uses: actions/github-script@v5.0.0
+        env:
+          py2: "${{ matrix.py2 }}"
+        with:
+          result-encoding: string
+          script: |
+            const { py2 } = process.env;
+            const major = py2.substr(0,1);
+            const minor = py2.substr(1);
+            core.setOutput('pydot2', major+"."+minor)
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
         with:
-          python-version: ${{ matrix.py2dot }}
+          python-version:${{steps.get-id.outputs.pydot2}}
       - run: python --version
-      - run: python -c "from sysconfig import get_paths;print(get_paths())"
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: gather
+        with:
+          run: python -c "from sysconfig import get_paths;print(get_paths()['include'])"
+      - name: Easy Zip Files
+        uses: vimtor/action-zip@v1
+        with:
+          files: ${{steps.gather.outputs.stdout}}
+          dest: windows_python${{ matrix.py2 }}.zip
+      - uses: actions/upload-artifact@v2.2.4
+        with:
+          name: windows_python${{ matrix.py2 }}.zip
+          retention-days: 1
+      - name: Upload files to a GitHub release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          overwrite: true
+          tag: evergreen
+          file: windows_python${{ matrix.py2 }}.zip
+
