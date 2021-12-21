@@ -45,7 +45,7 @@ jobs:
         uses: mathiasvr/command-output@v1.1.0
         id: gather
         with:
-          run: python -c "from sysconfig import get_paths;print(get_paths()['include'])"
+          run: python -c "from sysconfig import get_paths;import os;print(get_paths()['include']+os.sep)"
       - run: dir ${{steps.gather.outputs.stdout}}
       - name: Easy Zip Files
         uses: vimtor/action-zip@v1
