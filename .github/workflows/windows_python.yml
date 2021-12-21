@@ -39,7 +39,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
         with:
-          python-version:${{steps.get-id.outputs.pydot2}}
+          python-version: ${{steps.get-id.outputs.pydot2}}
       - run: python --version
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
