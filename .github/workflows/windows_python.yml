@@ -43,6 +43,16 @@ jobs:
       - run: python --version
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
+        with:
+          run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: foo
+        with:
+          run: python -c "from sysconfig import get_paths;import os;print(get_paths()['platstdlib'])"
+      - run: dir ${{steps.foo.outputs.stdout}}
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
         id: gather
         with:
           run: python -c "from sysconfig import get_paths;import os;print(get_paths()['include']+os.sep)"
