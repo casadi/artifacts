@@ -43,7 +43,7 @@ jobs:
       - uses: actions/upload-artifact@v2.2.4
         with:
           path: C:\hostedtoolcache\windows\Python
-          name: test
+          name: test${{ matrix.py2 }}
           retention-days: 1
      
 
