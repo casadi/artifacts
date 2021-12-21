@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        py2dot: ["27", "35", "36", "37", "38", "39", "310"]
+        py2: ["27", "35", "36", "37", "38", "39", "310"]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - id: get-id
