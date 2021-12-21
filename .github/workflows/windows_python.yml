@@ -46,6 +46,7 @@ jobs:
         id: gather
         with:
           run: python -c "from sysconfig import get_paths;print(get_paths()['include'])"
+      - run: dir ${{steps.gather.outputs.stdout}}
       - name: Easy Zip Files
         uses: vimtor/action-zip@v1
         with:
