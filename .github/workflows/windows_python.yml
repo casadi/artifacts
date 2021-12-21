@@ -30,3 +30,4 @@ jobs:
         with:
           python-version: ${{ matrix.py2dot }}
       - run: python --version
+      - run: python -c "from sysconfig import get_paths;print(get_paths())"
