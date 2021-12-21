@@ -40,10 +40,38 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{steps.get-id.outputs.pydot2}}
+      - run: tree C:\hostedtoolcache\windows\Python
+      - run: python --version
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        with:
+          run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: foo
+        with:
+          run: python -c "from sysconfig import get_paths;import os;print(get_paths()['platstdlib'])"
+      - run: dir ${{steps.foo.outputs.stdout}}
+      - name: Command Output
+        uses: mathiasvr/command-output@v1.1.0
+        id: gather
+        with:
+          run: python -c "from sysconfig import get_paths;import os;print(get_paths()['include']+os.sep)"
+      - run: dir ${{steps.gather.outputs.stdout}}
+      - name: Easy Zip Files
+        uses: vimtor/action-zip@v1
+        with:
+          files: ${{steps.gather.outputs.stdout}}
+          dest: windows_python${{ matrix.py2 }}.zip
       - uses: actions/upload-artifact@v2.2.4
         with:
-          path: C:\hostedtoolcache\windows\Python
-          name: test${{ matrix.py2 }}
+          name: windows_python${{ matrix.py2 }}.zip
           retention-days: 1
-     
+      - name: Upload files to a GitHub release
+        uses: svenstaro/upload-release-action@2.2.1
+        with:
+          repo_token: ${{ secrets.TOKEN_PUBLIC}}
+          overwrite: true
+          tag: evergreen
+          file: windows_python${{ matrix.py2 }}.zip
 
