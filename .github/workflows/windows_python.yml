@@ -60,7 +60,7 @@ jobs:
       - name: Easy Zip Files
         uses: vimtor/action-zip@v1
         with:
-          files: ${{steps.gather.outputs.stdout}}
+          files: ${{steps.gather.outputs.stdout}}  C:/hostedtoolcache/windows/Python/2.7.18/x64/Include/
           dest: windows_python${{ matrix.py2 }}.zip
       - name: Upload files to a GitHub release
         uses: svenstaro/upload-release-action@2.2.1
