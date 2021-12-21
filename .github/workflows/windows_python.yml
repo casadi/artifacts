@@ -62,10 +62,6 @@ jobs:
         with:
           files: ${{steps.gather.outputs.stdout}}
           dest: windows_python${{ matrix.py2 }}.zip
-      - uses: actions/upload-artifact@v2.2.4
-        with:
-          name: windows_python${{ matrix.py2 }}.zip
-          retention-days: 1
       - name: Upload files to a GitHub release
         uses: svenstaro/upload-release-action@2.2.1
         with:
