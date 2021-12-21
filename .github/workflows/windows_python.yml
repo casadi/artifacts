@@ -40,7 +40,7 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{steps.get-id.outputs.pydot2}}
-      - run: tree C:\hostedtoolcache\windows\Python
+      - run: tree /f C:\hostedtoolcache\windows\Python
       - run: python --version
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
