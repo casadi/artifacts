@@ -46,7 +46,7 @@ jobs:
         with:
           run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
       - id: foo
-        run: python -c "from sysconfig import get_paths;import os;import json;d=get_paths();d['libs']=os.path.join(os.environ['pythonLocation'],'libs');for k,v in d.items():print('::set-output '+k+'=paths::'+v)"
+        run: python -c "from sysconfig import get_paths;import os;import json;d=get_paths();d['libs']=os.path.join(os.environ['pythonLocation'],'libs');for k,v in d.items():\ print('::set-output '+k+'=paths::'+v)"
       - run: echo "${{steps.foo.outputs.libs}}"
       - run: echo "${{steps.foo.outputs.outputs}}"
       - name: Easy Zip Files
