@@ -47,8 +47,8 @@ jobs:
           run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
       - id: foo
         run: python -c "from sysconfig import get_paths;import os;import json;d=get_paths();d['libs']=os.path.join(os.environ['pythonLocation'],'libs');print('::set-output name=paths::'+json.dumps(d))"
-      - run: echo ${{steps.foo.outputs.paths}}
-      - run: echo ${{steps.foo.outputs.paths.libs}}
+      - run: echo "${{steps.foo.outputs.paths}}"
+      - run: echo "${{steps.foo.outputs.paths.libs}}"
       - name: Easy Zip Files
         uses: vimtor/action-zip@v1
         env:
