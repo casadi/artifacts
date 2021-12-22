@@ -25,6 +25,7 @@ jobs:
         py2: ["27", "35", "36", "37", "38", "39", "310"]
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+      - uses: actions/checkout@v2.4.0
       - id: get-id
         uses: actions/github-script@v5.0.0
         env:
@@ -46,13 +47,10 @@ jobs:
         with:
           run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
       - id: foo
-        run: python -c "from sysconfig import get_paths;import os;import json;d=get_paths();d['libs']=os.path.join(os.environ['pythonLocation'],'libs');for k,v in d.items():\ print('::set-output '+k+'=paths::'+v)"
+        run: python get_paths.py
       - run: echo "${{steps.foo.outputs.libs}}"
-      - run: echo "${{steps.foo.outputs.outputs}}"
       - name: Easy Zip Files
         uses: vimtor/action-zip@v1
-        env:
-          GITHUB_WORKSPACE: "gfgoofgfg"
         with:
           files: ${{steps.gather.outputs.stdout}}  C:/hostedtoolcache/windows/Python/2.7.18/x64/Include/
           dest: windows_python${{ matrix.py2 }}.zip
