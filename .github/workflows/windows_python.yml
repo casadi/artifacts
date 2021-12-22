@@ -45,18 +45,16 @@ jobs:
         uses: mathiasvr/command-output@v1.1.0
         with:
           run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
-      - name: Command Output
-        uses: mathiasvr/command-output@v1.1.0
-        id: foo
-        with:
-          run: python -c "from sysconfig import get_paths;import os;print(get_paths()['platstdlib'])"
+      - id: foo
+        run: python -c "from sysconfig import get_paths;import os;import json;d=get_paths();d['libs']=os.path.join(os.environ['pythonLocation'],'libs');print('::set-output name=paths::'+json.dumps(d))"
       - run: dir ${{steps.foo.outputs.stdout}}
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
         id: gather
         with:
           run: python -c "from sysconfig import get_paths;import os;print(get_paths()['include']+os.sep+' '+os.path.join(get_paths()['data'],'libs')+os.sep)"
-      - run: echo ${{steps.gather.outputs.stdout}}
+      - run: echo ${{steps.gather.outputs.paths}}
+      - run: echo ${{steps.gather.outputs.paths.libs}}
       - name: Easy Zip Files
         uses: vimtor/action-zip@v1
         env:
