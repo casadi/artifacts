@@ -55,6 +55,7 @@ jobs:
         uses: vimtor/action-zip@v1
         with:
           files: libs/ include/
+          recursive: false
           dest: windows_python${{ matrix.py2 }}.zip
       - name: Upload files to a GitHub release
         uses: svenstaro/upload-release-action@2.2.1
