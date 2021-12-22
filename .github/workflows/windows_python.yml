@@ -23,6 +23,7 @@ jobs:
       fail-fast: false
       matrix:
         py2: ["27", "35", "36", "37", "38", "39", "310"]
+        arch: ['x64','x86']
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2.4.0
@@ -41,6 +42,7 @@ jobs:
         uses: actions/setup-python@v2.3.1
         with:
           python-version: ${{steps.get-id.outputs.pydot2}}
+          architecture: ${{matrix.arch}}
       - run: python --version
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
@@ -56,12 +58,12 @@ jobs:
         with:
           files: libs/ include/
           recursive: false
-          dest: windows_python${{ matrix.py2 }}.zip
+          dest: windows_python${{ matrix.py2 }}_${{ matrix.arch }}.zip
       - name: Upload files to a GitHub release
         uses: svenstaro/upload-release-action@2.2.1
         with:
           repo_token: ${{ secrets.TOKEN_PUBLIC}}
           overwrite: true
           tag: evergreen
-          file: windows_python${{ matrix.py2 }}.zip
+          file: windows_python${{ matrix.py2 }}_${{ matrix.arch }}.zip
 
