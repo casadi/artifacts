@@ -13,4 +13,7 @@ jobs:
           update-conda: true
           python-version: 3.8
           conda-channels: anaconda, conda-forge
-      - run: conda install -y -c conda-forge c-compiler==1.0.4 cxx-compiler==1.0.4 fortran-compiler==1.0.4
+      - run: |
+             conda install -y -c conda-forge c-compiler==1.0.4 cxx-compiler==1.0.4 fortran-compiler==1.0.4
+             gcc --version
+             gfortran --version
