@@ -1,69 +1,16 @@
-# This is a basic workflow to help you get started with Actions
+name: source_package
 
-name: CI
+on: push
 
-# Controls when the workflow will run
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ python ]
-  pull_request:
-    branches: [ python ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
-    runs-on: windows-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        py2: ["27", "35", "36", "37", "38", "39", "310"]
-        arch: ['x64','x86']
-    # Steps represent a sequence of tasks that will be executed as part of the job
+  
+  core-macos10_15:
+    runs-on: macos-10.15
     steps:
-      - uses: actions/checkout@v2.4.0
-      - id: get-id
-        uses: actions/github-script@v5.0.0
-        env:
-          py2: "${{ matrix.py2 }}"
+      - name: Setup conda
+        uses: s-weigand/setup-conda@v1
         with:
-          result-encoding: string
-          script: |
-            const { py2 } = process.env;
-            const major = py2.substr(0,1);
-            const minor = py2.substr(1);
-            core.setOutput('pydot2', major+"."+minor)
-      - name: Setup Python
-        uses: actions/setup-python@v2.3.1
-        with:
-          python-version: ${{steps.get-id.outputs.pydot2}}
-          architecture: ${{matrix.arch}}
-      - run: python --version
-      - name: Command Output
-        uses: mathiasvr/command-output@v1.1.0
-        with:
-          run: python -c "from sysconfig import get_paths;import os;print(get_paths())"
-      - id: foo
-        run: python get_paths.py
-      - run: echo "${{steps.foo.outputs.libs}}"
-      - run: xcopy /e /k /i ${{steps.foo.outputs.libs}} libs
-      - run: xcopy /e /k /i ${{steps.foo.outputs.platinclude}} include
-      - name: Easy Zip Files
-        uses: vimtor/action-zip@v1
-        with:
-          files: libs/ include/
-          recursive: false
-          dest: windows_python${{ matrix.py2 }}_${{ matrix.arch }}.zip
-      - name: Upload files to a GitHub release
-        uses: svenstaro/upload-release-action@2.2.1
-        with:
-          repo_token: ${{ secrets.TOKEN_PUBLIC}}
-          overwrite: true
-          tag: evergreen
-          file: windows_python${{ matrix.py2 }}_${{ matrix.arch }}.zip
-
+          update-conda: true
+          python-version: 3.8
+          conda-channels: anaconda, conda-forge
+      - run: conda install -y -c conda-forge c-compiler==1.0.4 cxx-compiler==1.0.4 fortran-compiler==1.0.4
