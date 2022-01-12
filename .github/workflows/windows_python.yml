@@ -23,4 +23,4 @@ jobs:
         with:
           python-version: 3.5
       - run: python --version
-      - run: python-config --version
+      - run: python-config --prefix
