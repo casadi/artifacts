@@ -7,10 +7,12 @@ jobs:
   core-macos10_15:
     runs-on: macos-10.15
     steps:
+      - uses: actions/checkout@v2.4.0
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
         with:
           python-version: 3.5
+      - run: mkdir build && cd build && cmake ..
       - run: python --version
       - run: cat /usr/local/bin/python-config
       - run: python-config --prefix
