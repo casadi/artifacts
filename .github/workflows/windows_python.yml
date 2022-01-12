@@ -12,5 +12,7 @@ jobs:
         with:
           python-version: 3.5
       - run: python --version
+      - run: cat /usr/local/bin/python-config
       - run: python-config --prefix
       - run: python3 --version
+
