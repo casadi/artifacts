@@ -4,9 +4,10 @@ on: push
 
 jobs:
   
-  core-macos10_15:
-    runs-on: macos-10.15
+  core-macos11:
+    runs-on: macos-11
     steps:
+      - uses: pkg-config
       - uses: actions/checkout@v2.4.0
       - name: Setup Python
         uses: actions/setup-python@v2.3.1
