@@ -9,7 +9,7 @@ jobs:
     steps:
       - run: |
           git clone https://github.com/coin-or/Osi.git
-          cd Osi && ./configure
+          cd Osi && git checkout releases/0.108.7 && ./configure
       - run: pkg-config
       - uses: actions/checkout@v2.4.0
       - name: Setup Python
