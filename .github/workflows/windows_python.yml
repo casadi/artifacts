@@ -43,6 +43,7 @@ jobs:
         with:
           python-version: ${{steps.get-id.outputs.pydot2}}
           architecture: ${{matrix.arch}}
+          allow-prereleases: true
       - run: python --version
       - name: Command Output
         uses: mathiasvr/command-output@v1.1.0
